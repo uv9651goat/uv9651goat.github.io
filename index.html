@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utkarsh Vishwakarma – Robotics Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0800;
+    --bg2: #100e00;
+    --bg3: #161200;
+    --cyan: #ff8c00;
+    --cyan-dim: #e67e00;
+    --green: #ffd000;
+    --amber: #ff6600;
+    --red: #ff3864;
+    --text: #e8d5b0;
+    --text-dim: #7a6640;
+    --border: rgba(255,140,0,0.18);
+    --glow: 0 0 20px rgba(255,140,0,0.35);
+    --glow-strong: 0 0 40px rgba(255,140,0,0.7);
+    --font-display: 'Orbitron', monospace;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--cyan); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, opacity 0.2s;
+    box-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(255,140,0,0.45); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,140,0,0.018) 2px, rgba(255,140,0,0.018) 4px);
+    pointer-events: none; z-index: 1000;
+  }
+
+  /* GRID BACKGROUND */
+  .grid-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,140,0,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,140,0,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(6,8,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 14px; font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .nav-logo span { color: var(--text-dim); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--text-dim); text-decoration: none;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--cyan);
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-status {
+    font-family: var(--font-mono); font-size: 11px;
+    color: #ffd000; letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #ffd000;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px #ffd000; }
+    50% { opacity: 0.4; box-shadow: none; }
+  }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 60px 60px;
+    gap: 60px;
+  }
+  .hero-left { animation: fadeSlideLeft 1s ease both; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 32px;
+    background: rgba(255,140,0,0.05);
+  }
+  .hero-badge::before { content: '//'; color: var(--text-dim); }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .hero-name .highlight {
+    color: var(--cyan);
+    text-shadow: var(--glow-strong);
+  }
+  .hero-title {
+    font-family: var(--font-mono); font-size: 14px;
+    color: var(--cyan-dim); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 32px;
+  }
+  .hero-desc {
+    font-size: 18px; font-weight: 300;
+    color: var(--text); line-height: 1.8;
+    max-width: 480px; margin-bottom: 48px;
+    border-left: 2px solid var(--cyan);
+    padding-left: 20px;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px;
+    background: var(--cyan); color: #000;
+    font-family: var(--font-display); font-size: 12px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: none;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition: all 0.3s;
+  }
+  .btn-primary:hover { background: #fff; box-shadow: var(--glow-strong); transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 32px;
+    background: transparent; color: var(--cyan);
+    font-family: var(--font-display); font-size: 12px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; cursor: none;
+    border: 1px solid var(--cyan);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition: all 0.3s;
+  }
+  .btn-secondary:hover { background: rgba(255,140,0,0.12); box-shadow: var(--glow); transform: translateY(-2px); }
+
+  /* HERO RIGHT - ANIMATED VISUALS */
+  .hero-right {
+    display: flex; flex-direction: column; gap: 20px;
+    animation: fadeSlideRight 1s ease 0.3s both;
+  }
+  .hero-visual-main {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    height: 320px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual-main::before {
+    content: 'MARS ROVER // RENDER';
+    position: absolute; top: 12px; left: 16px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); letter-spacing: 2px;
+  }
+  .hero-visual-main::after {
+    content: 'SYS:ACTIVE';
+    position: absolute; top: 12px; right: 16px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--green); letter-spacing: 1px;
+  }
+  .hero-visuals-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hero-visual-sm {
+    background: var(--bg2); border: 1px solid var(--border);
+    height: 160px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual-sm::before {
+    content: attr(data-label);
+    position: absolute; top: 10px; left: 12px;
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-dim); letter-spacing: 1px;
+  }
+
+  /* ROVER SVG */
+  .rover-svg { width: 260px; height: 200px; }
+  .wheel { animation: wheelSpin 2s linear infinite; transform-origin: center; }
+  .rover-body { animation: roverFloat 3s ease-in-out infinite; }
+  @keyframes wheelSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes roverFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* ARM SVG */
+  .arm-seg1 { animation: armSeg1 4s ease-in-out infinite; transform-origin: 50px 140px; }
+  .arm-seg2 { animation: armSeg2 4s ease-in-out infinite 0.5s; transform-origin: 50px 90px; }
+  .arm-end  { animation: armSeg2 4s ease-in-out infinite 1s; transform-origin: 50px 50px; }
+  @keyframes armSeg1 {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-15deg); }
+  }
+  @keyframes armSeg2 {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(20deg); }
+  }
+
+  /* ROTATING CAD */
+  .cad-model { animation: cadRotate 8s linear infinite; transform-origin: center; }
+  @keyframes cadRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* SCAN LINE ANIM */
+  .scan-line {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: scanMove 3s linear infinite;
+    opacity: 0.6;
+  }
+  @keyframes scanMove {
+    from { top: 0; }
+    to { top: 100%; }
+  }
+
+  /* CORNER BRACKETS */
+  .bracket::before, .bracket::after,
+  .bracket-inner::before, .bracket-inner::after {
+    content: ''; position: absolute;
+    width: 16px; height: 16px;
+  }
+  .bracket::before { top: 0; left: 0; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .bracket::after  { top: 0; right: 0; border-top: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+  .bracket-inner::before { bottom: 0; left: 0; border-bottom: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+  .bracket-inner::after  { bottom: 0; right: 0; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header { text-align: center; margin-bottom: 80px; }
+  .section-tag {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 4px;
+    text-transform: uppercase; margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+  }
+  .section-tag::before, .section-tag::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--cyan); opacity: 0.4;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900; text-transform: uppercase;
+    letter-spacing: 3px; color: #fff;
+  }
+  .section-title .accent { color: var(--cyan); }
+
+  /* ===== PROJECTS ===== */
+  #projects { padding: 120px 60px; background: var(--bg2); }
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .project-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    cursor: none;
+  }
+  .project-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--cyan);
+    box-shadow: var(--glow), inset 0 0 40px rgba(255,140,0,0.04);
+  }
+  .project-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,140,0,0.06), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-visual {
+    height: 200px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: rgba(0,0,0,0.4);
+  }
+  .project-num {
+    position: absolute; top: 12px; left: 14px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); letter-spacing: 1px;
+  }
+  .project-status {
+    position: absolute; top: 12px; right: 14px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--cyan); letter-spacing: 1px;
+  }
+  .project-body { padding: 24px; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .tag {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-dim); border: 1px solid rgba(255,255,255,0.08);
+    padding: 3px 10px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .tag.highlight { color: var(--cyan); border-color: rgba(255,140,0,0.28); }
+  .project-title {
+    font-family: var(--font-display); font-size: 15px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #fff;
+    margin-bottom: 10px;
+  }
+  .project-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.6; }
+  .project-specs { margin-bottom: 20px; }
+  .spec-item {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--text-dim); padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .spec-item::before { content: '›'; color: var(--cyan); }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--cyan); text-decoration: none;
+    letter-spacing: 2px; text-transform: uppercase;
+    transition: gap 0.3s;
+  }
+  .project-link:hover { gap: 14px; }
+  .project-link::after { content: '→'; }
+
+  /* ===== ABOUT ===== */
+  #about {
+    padding: 120px 60px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+  .about-philosophy {
+    font-family: var(--font-display); font-size: 13px;
+    font-weight: 400; line-height: 2;
+    color: var(--text-dim); letter-spacing: 1px;
+    padding: 32px; border: 1px solid var(--border);
+    position: relative; margin-bottom: 32px;
+    background: rgba(255,140,0,0.03);
+  }
+  .about-philosophy::before {
+    content: '"'; position: absolute; top: -20px; left: 24px;
+    font-size: 80px; color: var(--cyan); opacity: 0.3;
+    font-family: serif; line-height: 1;
+  }
+  .about-text { font-size: 17px; line-height: 1.9; color: var(--text); margin-bottom: 32px; }
+  .about-text strong { color: var(--cyan); }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .skill-group-title {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--cyan); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .skill-group-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .skill-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 14px; color: var(--text);
+  }
+  .skill-bar {
+    width: 80px; height: 3px; background: rgba(255,255,255,0.08);
+    position: relative; overflow: hidden;
+  }
+  .skill-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: var(--cyan);
+    box-shadow: 0 0 8px #ff8c00;
+    animation: fillBar 1.5s ease both;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes fillBar { from { width: 0; } }
+
+  /* ===== ENGINEERING / RESEARCH ===== */
+  #engineering { padding: 120px 60px; background: var(--bg2); }
+  .research-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .research-card {
+    border: 1px solid var(--border);
+    padding: 32px; position: relative;
+    background: var(--bg3); overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .research-card:hover { border-color: #ff6600; box-shadow: 0 0 20px rgba(255,102,0,0.3); }
+  .research-icon {
+    width: 48px; height: 48px; margin-bottom: 20px;
+    border: 1px solid var(--cyan); display: flex; align-items: center; justify-content: center;
+    color: #ff6600; font-size: 20px;
+  }
+  .research-title {
+    font-family: var(--font-display); font-size: 13px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #fff; margin-bottom: 14px;
+  }
+  .research-desc { font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-bottom: 20px; }
+  .research-specs { list-style: none; }
+  .research-specs li {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--text-dim); padding: 4px 0;
+    display: flex; gap: 8px;
+  }
+  .research-specs li::before { content: '○'; color: #ff6600; flex-shrink: 0; }
+
+  /* ===== ACHIEVEMENTS ===== */
+  #achievements { padding: 120px 60px; }
+  .achievements-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .achievement-item {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 24px; align-items: start;
+    padding: 28px 0; border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .achievement-item:hover .ach-rank { color: var(--cyan); text-shadow: var(--glow); }
+  .ach-rank {
+    font-family: var(--font-display); font-size: 32px;
+    font-weight: 900; color: var(--text-dim);
+    transition: all 0.3s; line-height: 1;
+  }
+  .ach-rank.gold { color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+  .ach-rank.finalist { color: #ff6600; text-shadow: 0 0 20px rgba(255,170,0,0.4); }
+  .ach-name {
+    font-family: var(--font-display); font-size: 14px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #fff; margin-bottom: 6px;
+  }
+  .ach-event { font-family: var(--font-mono); font-size: 12px; color: var(--cyan-dim); margin-bottom: 6px; }
+  .ach-desc { font-size: 14px; color: var(--text-dim); }
+  .stats-panel {
+    background: var(--bg2); border: 1px solid var(--border); padding: 40px;
+    position: relative; overflow: hidden;
+  }
+  .stats-panel::before {
+    content: 'PERFORMANCE METRICS';
+    position: absolute; top: 16px; left: 20px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); letter-spacing: 2px;
+  }
+  .stats-panel::after {
+    content: ''; position: absolute;
+    inset: 0; border: 1px solid var(--cyan);
+    opacity: 0.1; pointer-events: none;
+  }
+  .stat-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .stat-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); letter-spacing: 1px; }
+  .stat-val {
+    font-family: var(--font-display); font-size: 28px;
+    font-weight: 900; color: var(--cyan);
+    text-shadow: var(--glow);
+  }
+  .stat-bar-outer {
+    flex: 1; height: 4px; background: rgba(255,255,255,0.06);
+    margin: 0 20px; position: relative;
+  }
+  .stat-bar-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, #ff8c00, #ffd000);
+    box-shadow: 0 0 8px #ff8c00;
+    transition: width 1.5s ease;
+  }
+
+  /* ===== RESUME ===== */
+  #resume { padding: 120px 60px; background: var(--bg2); }
+  .resume-layout { display: grid; grid-template-columns: 1fr 320px; gap: 60px; }
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(180deg, var(--cyan), transparent);
+  }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-dot {
+    position: absolute; left: -44px; top: 6px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ff8c00; box-shadow: 0 0 10px #ff8c00;
+  }
+  .timeline-dot.major { width: 12px; height: 12px; left: -46px; }
+  .timeline-year {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .timeline-role {
+    font-family: var(--font-display); font-size: 14px;
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #fff; margin-bottom: 4px;
+  }
+  .timeline-org { font-size: 14px; color: var(--cyan-dim); margin-bottom: 8px; }
+  .timeline-desc { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+  .resume-panel { position: sticky; top: 100px; }
+  .resume-download {
+    background: var(--bg3); border: 1px solid var(--border);
+    padding: 32px; text-align: center; margin-bottom: 24px;
+  }
+  .resume-preview-icon {
+    width: 80px; height: 100px; background: rgba(255,140,0,0.06);
+    border: 1px solid var(--border); margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); letter-spacing: 1px;
+    flex-direction: column; gap: 4px;
+  }
+  .btn-download {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 24px; background: var(--cyan); color: #000;
+    font-family: var(--font-display); font-size: 11px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; cursor: none; width: 100%;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: all 0.3s; margin-bottom: 12px;
+  }
+  .btn-download:hover { background: #fff; }
+  .edu-card {
+    background: var(--bg3); border: 1px solid var(--border); padding: 24px;
+  }
+  .edu-deg {
+    font-family: var(--font-display); font-size: 12px;
+    font-weight: 700; color: #fff; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .edu-inst { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); margin-bottom: 4px; }
+  .edu-year { font-size: 13px; color: var(--text-dim); }
+
+  /* ===== CONTACT ===== */
+  #contact { padding: 120px 60px; }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .contact-info-title {
+    font-family: var(--font-display); font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900; text-transform: uppercase;
+    letter-spacing: 2px; color: #fff; margin-bottom: 20px;
+  }
+  .contact-info-title .accent { color: var(--cyan); }
+  .contact-desc { font-size: 16px; color: var(--text-dim); line-height: 1.8; margin-bottom: 40px; }
+  .contact-links { display: flex; flex-direction: column; gap: 16px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 20px;
+    padding: 16px 20px; border: 1px solid var(--border);
+    text-decoration: none; color: var(--text);
+    transition: all 0.3s; background: var(--bg2);
+    font-size: 15px;
+  }
+  .contact-link:hover { border-color: var(--cyan); color: var(--cyan); transform: translateX(8px); }
+  .contact-link-icon {
+    width: 40px; height: 40px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 16px;
+  }
+  .contact-link-label { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
+  .contact-link-val { font-size: 14px; }
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+  .form-group { position: relative; }
+  .form-label {
+    display: block; font-family: var(--font-mono); font-size: 10px;
+    color: var(--cyan); letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .form-input, .form-textarea {
+    width: 100%; background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text); font-family: var(--font-body); font-size: 15px;
+    padding: 14px 16px; outline: none; transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(255,140,0,0.12);
+  }
+  .form-textarea { height: 140px; }
+  .btn-send {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 16px 32px; background: var(--cyan); color: #000;
+    font-family: var(--font-display); font-size: 12px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    border: none; cursor: none; width: 100%;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition: all 0.3s;
+  }
+  .btn-send:hover { background: #fff; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);
+  }
+  footer span { color: var(--cyan); }
+
+  /* ANIMATIONS */
+  @keyframes fadeSlideLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeSlideRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .fade-in {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* MISC DECORATIVE */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    margin: 0 60px;
+  }
+  .hex-pattern {
+    position: absolute; right: -100px; top: 50%;
+    transform: translateY(-50%);
+    width: 300px; height: 300px;
+    opacity: 0.03; pointer-events: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    #hero, #about, .projects-grid, .research-grid,
+    .achievements-layout, .resume-layout, .contact-layout {
+      grid-template-columns: 1fr;
+    }
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    #hero, #projects, #about, #engineering, #achievements, #resume, #contact {
+      padding: 80px 24px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">UV<span>/</span>ENG</div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#engineering">Research</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#achievements">Awards</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    OPEN TO OPPORTUNITIES
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Mechanical Lead &amp; Robotics Systems</div>
+    <h1 class="hero-name">
+      Utkarsh<br><span class="highlight">Vishwakarma</span>
+    </h1>
+    <div class="hero-title">IIITDM Kancheepuram · B.Tech ME · CGPA 8.7</div>
+    <p class="hero-desc">
+      Engineer who brings ideas to life through strong mechanical design and system integration. Building autonomous manipulators, rovers, and cleaning robots — from CAD to competition.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#resume" class="btn-secondary">Resume</a>
+      <a href="#contact" class="btn-secondary">Contact</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+
+    <!-- MARS PLANET + ROVER 3D EMBED -->
+    <div style="position:relative;">
+
+      <!-- Animated Mars planet background -->
+      <div style="position:absolute;top:-30px;right:-20px;width:160px;height:160px;z-index:0;pointer-events:none;">
+        <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="marsGrad" cx="38%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#e8703a"/>
+              <stop offset="40%" stop-color="#c1440e"/>
+              <stop offset="100%" stop-color="#6b1a00"/>
+            </radialGradient>
+            <radialGradient id="marsGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="60%" stop-color="transparent"/>
+              <stop offset="100%" stop-color="rgba(200,80,20,0.35)"/>
+            </radialGradient>
+            <clipPath id="marsClip"><circle cx="80" cy="80" r="58"/></clipPath>
+          </defs>
+          <!-- Glow ring -->
+          <circle cx="80" cy="80" r="70" fill="url(#marsGlow)"/>
+          <!-- Planet body -->
+          <circle cx="80" cy="80" r="58" fill="url(#marsGrad)"/>
+          <!-- Surface texture bands -->
+          <g clip-path="url(#marsClip)" style="animation:marsRotate 40s linear infinite;transform-origin:80px 80px">
+            <ellipse cx="80" cy="62" rx="55" ry="6" fill="rgba(180,60,10,0.35)" transform="rotate(-8,80,62)"/>
+            <ellipse cx="80" cy="78" rx="52" ry="4" fill="rgba(120,35,5,0.3)" transform="rotate(5,80,78)"/>
+            <ellipse cx="80" cy="92" rx="50" ry="5" fill="rgba(160,50,8,0.28)" transform="rotate(-4,80,92)"/>
+            <ellipse cx="80" cy="106" rx="48" ry="3" fill="rgba(100,25,3,0.25)" transform="rotate(7,80,106)"/>
+            <!-- Craters -->
+            <circle cx="60" cy="70" r="7" fill="rgba(80,20,0,0.3)" stroke="rgba(200,100,40,0.2)" stroke-width="0.5"/>
+            <circle cx="100" cy="88" r="5" fill="rgba(80,20,0,0.25)" stroke="rgba(200,100,40,0.15)" stroke-width="0.5"/>
+            <circle cx="72" cy="98" r="4" fill="rgba(80,20,0,0.2)"/>
+            <circle cx="95" cy="65" r="3" fill="rgba(80,20,0,0.2)"/>
+            <circle cx="50" cy="88" r="3" fill="rgba(80,20,0,0.15)"/>
+            <!-- Polar ice cap -->
+            <ellipse cx="80" cy="28" rx="18" ry="6" fill="rgba(255,220,190,0.25)" transform="rotate(3,80,28)"/>
+          </g>
+          <!-- Atmosphere haze -->
+          <circle cx="80" cy="80" r="58" fill="none" stroke="rgba(230,120,50,0.15)" stroke-width="8"/>
+          <!-- Orbit ring -->
+          <ellipse cx="80" cy="80" rx="72" ry="18" fill="none" stroke="rgba(255,140,0,0.12)" stroke-width="0.8" stroke-dasharray="4 4" style="animation:marsOrbit 12s linear infinite;transform-origin:80px 80px"/>
+          <!-- Tiny orbiting moon -->
+          <circle r="3" fill="#ff8c00" opacity="0.7" style="animation:moonOrbit 12s linear infinite;transform-origin:80px 80px">
+            <animateMotion dur="12s" repeatCount="indefinite" path="M 72 80 a 72 18 0 1 1 -0.01 0"/>
+          </circle>
+        </svg>
+        <style>
+          @keyframes marsRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+          @keyframes marsOrbit { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        </style>
+      </div>
+
+      <!-- Rover Sketchfab 3D embed -->
+      <div class="bracket bracket-inner" style="position:relative;z-index:1;background:#100e00;border:1px solid rgba(255,140,0,0.25);overflow:hidden;">
+        <div style="position:absolute;top:10px;left:14px;font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,140,0,0.5);letter-spacing:2px;z-index:2;">ROVER CHASSIS // 3D MODEL</div>
+        <div style="position:absolute;top:10px;right:14px;font-family:'Share Tech Mono',monospace;font-size:9px;color:#ffd000;letter-spacing:1px;z-index:2;">● LIVE</div>
+        <div style="position:relative;padding-bottom:62%;height:0;overflow:hidden;">
+          <iframe title="Rover Chassis"
+            frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"
+            allow="autoplay; fullscreen; xr-spatial-tracking"
+            src="https://sketchfab.com/models/4a3650c0fcfc438fa2b177d02585a516/embed?autospin=0.4&autostart=1&ui_theme=dark&ui_infos=0&ui_watermark=0&ui_controls=0&ui_stop=0&ui_inspector=0&ui_ar=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0&transparent=0&camera=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;margin-top:28px;">
+          </iframe>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(255,140,0,0.4);letter-spacing:1px;text-align:center;padding:8px 0 10px;">DRAG TO ROTATE · SCROLL TO ZOOM</div>
+      </div>
+
+      <!-- Small panels row -->
+      <div class="hero-visuals-row" style="margin-top:16px;">
+        <!-- Mars surface label card -->
+        <div class="hero-visual-sm bracket bracket-inner" data-label="MARS SURFACE // TERRAIN" style="background:linear-gradient(135deg,#1a0800,#0a0400);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <defs>
+              <radialGradient id="mg2" cx="40%" cy="38%" r="55%">
+                <stop offset="0%" stop-color="#d4622a"/>
+                <stop offset="100%" stop-color="#5a1500"/>
+              </radialGradient>
+              <clipPath id="mc2"><circle cx="45" cy="45" r="34"/></clipPath>
+            </defs>
+            <circle cx="45" cy="45" r="38" fill="rgba(200,70,20,0.1)"/>
+            <circle cx="45" cy="45" r="34" fill="url(#mg2)"/>
+            <g clip-path="url(#mc2)">
+              <ellipse cx="45" cy="36" rx="32" ry="3.5" fill="rgba(160,50,8,0.3)" transform="rotate(-6,45,36)"/>
+              <ellipse cx="45" cy="50" rx="30" ry="3" fill="rgba(120,30,5,0.25)" transform="rotate(4,45,50)"/>
+              <circle cx="34" cy="42" r="5" fill="rgba(60,15,0,0.3)"/>
+              <circle cx="55" cy="52" r="3.5" fill="rgba(60,15,0,0.25)"/>
+              <ellipse cx="45" cy="16" rx="10" ry="3.5" fill="rgba(255,220,190,0.2)" transform="rotate(2,45,16)"/>
+            </g>
+            <circle cx="45" cy="45" r="34" fill="none" stroke="rgba(230,120,50,0.2)" stroke-width="5"/>
+            <text x="45" y="82" text-anchor="middle" font-family="'Share Tech Mono'" font-size="6" fill="rgba(255,140,0,0.5)">4TH GLOBAL · ERC 2025</text>
+          </svg>
+        </div>
+
+        <!-- Arm animated -->
+        <div class="hero-visual-sm bracket bracket-inner" data-label="5-DOF ARM // SIM">
+          <svg width="100" height="140" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="140" width="40" height="10" rx="2" fill="none" stroke="#ff8c00" stroke-width="1.5" opacity="0.7"/>
+            <circle cx="50" cy="140" r="8" fill="none" stroke="#ff8c00" stroke-width="1.5" opacity="0.7"/>
+            <g class="arm-seg1">
+              <rect x="44" y="95" width="12" height="48" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.5" opacity="0.7"/>
+              <circle cx="50" cy="97" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+              <g class="arm-seg2">
+                <rect x="44" y="55" width="12" height="44" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="50" cy="57" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+                <g class="arm-end">
+                  <rect x="44" y="30" width="12" height="28" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.5" opacity="0.7"/>
+                  <circle cx="50" cy="31" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+                  <line x1="45" y1="18" x2="38" y2="10" stroke="#ff8c00" stroke-width="1.5" opacity="0.8"/>
+                  <line x1="55" y1="18" x2="62" y2="10" stroke="#ff8c00" stroke-width="1.5" opacity="0.8"/>
+                  <circle cx="50" cy="20" r="4" fill="none" stroke="#ff6600" stroke-width="1"/>
+                </g>
+              </g>
+            </g>
+            <text x="4" y="135" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.4)">J1</text>
+            <text x="4" y="100" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.4)">J2</text>
+            <text x="4" y="60" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.4)">J3</text>
+            <text x="4" y="30" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.4)">J5</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="section-header fade-in">
+    <div class="section-tag">Engineering Work</div>
+    <h2 class="section-title">Featured <span class="accent">Projects</span></h2>
+  </div>
+  <div class="projects-grid">
+
+    <!-- Project 1 -->
+    <div class="project-card bracket bracket-inner fade-in">
+      <div class="project-visual">
+        <div class="scan-line"></div>
+        <svg width="200" height="140" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <g class="rover-body">
+            <rect x="60" y="40" width="80" height="40" rx="3" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+            <rect x="64" y="44" width="72" height="32" fill="rgba(255,140,0,0.05)"/>
+            <line x1="100" y1="40" x2="100" y2="28" stroke="#ff8c00" stroke-width="1" opacity="0.6"/>
+            <rect x="94" y="22" width="12" height="8" rx="1" fill="none" stroke="#ff8c00" stroke-width="0.8"/>
+          </g>
+          <g transform="translate(45,100)"><circle class="wheel" cx="0" cy="0" r="14" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/><circle cx="0" cy="0" r="6" fill="none" stroke="#ff8c00" stroke-width="0.8" opacity="0.5"/><line x1="-14" y1="0" x2="14" y2="0" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/><line x1="0" y1="-14" x2="0" y2="14" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/></g>
+          <g transform="translate(100,104)"><circle class="wheel" cx="0" cy="0" r="14" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/><circle cx="0" cy="0" r="6" fill="none" stroke="#ff8c00" stroke-width="0.8" opacity="0.5"/><line x1="-14" y1="0" x2="14" y2="0" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/><line x1="0" y1="-14" x2="0" y2="14" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/></g>
+          <g transform="translate(155,100)"><circle class="wheel" cx="0" cy="0" r="14" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/><circle cx="0" cy="0" r="6" fill="none" stroke="#ff8c00" stroke-width="0.8" opacity="0.5"/><line x1="-14" y1="0" x2="14" y2="0" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/><line x1="0" y1="-14" x2="0" y2="14" stroke="rgba(255,140,0,0.28)" stroke-width="0.5"/></g>
+          <line x1="60" y1="80" x2="45" y2="100" stroke="#ff8c00" stroke-width="0.8" opacity="0.4"/>
+          <line x1="60" y1="80" x2="100" y2="104" stroke="#ff8c00" stroke-width="0.8" opacity="0.4"/>
+          <line x1="140" y1="80" x2="155" y2="100" stroke="#ff8c00" stroke-width="0.8" opacity="0.4"/>
+          <text x="10" y="15" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.45)">ERC-2025 // MARS ROVER</text>
+        </svg>
+        <div class="project-num">01</div>
+        <div class="project-status">ACTIVE</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag highlight">IRC 2026 · ERC 2025</span>
+          <span class="tag">ANSYS</span>
+          <span class="tag">Fusion 360</span>
+          <span class="tag">SolidWorks</span>
+        </div>
+        <h3 class="project-title">Rover Development — IRC &amp; ERC</h3>
+        <p class="project-desc">High-performance six-wheeled rover with triple-bogie suspension. &lt;50 kg total weight. PETG &amp; TPU wheels. ERC Global Finalist — ranked 4th globally in submission category.</p>
+        <div class="project-specs">
+          <div class="spec-item">Triple-bogie suspension for terrain adaptability</div>
+          <div class="spec-item">PETG + TPU wheels for traction &amp; flexibility</div>
+          <div class="spec-item">ANSYS FEA — stiffness-to-weight optimization</div>
+          <div class="spec-item">Mechanical–electrical integration &amp; field testing</div>
+        </div>
+        <a href="#" class="project-link" onclick="openModal('rover'); return false;">View Analysis</a>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project-card bracket bracket-inner fade-in">
+      <div class="project-visual">
+        <svg width="160" height="140" viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="140" width="40" height="8" rx="2" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="50" cy="140" r="7" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+          <g class="arm-seg1">
+            <rect x="44" y="98" width="12" height="44" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+            <circle cx="50" cy="100" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+            <g class="arm-seg2">
+              <rect x="44" y="60" width="12" height="40" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+              <circle cx="50" cy="62" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+              <g class="arm-end">
+                <rect x="44" y="35" width="12" height="26" rx="4" fill="rgba(255,140,0,0.07)" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+                <circle cx="50" cy="37" r="5" fill="none" stroke="#ffd000" stroke-width="1.2"/>
+                <line x1="44" y1="22" x2="37" y2="14" stroke="#ff8c00" stroke-width="1.2" opacity="0.8"/>
+                <line x1="56" y1="22" x2="63" y2="14" stroke="#ff8c00" stroke-width="1.2" opacity="0.8"/>
+                <circle cx="50" cy="23" r="3" fill="none" stroke="#ffaa00" stroke-width="1"/>
+              </g>
+            </g>
+          </g>
+          <text x="4" y="138" font-family="'Share Tech Mono'" font-size="7" fill="rgba(0,245,255,0.35)">J1</text>
+          <text x="4" y="102" font-family="'Share Tech Mono'" font-size="7" fill="rgba(0,245,255,0.35)">J2</text>
+          <text x="4" y="64" font-family="'Share Tech Mono'" font-size="7" fill="rgba(0,245,255,0.35)">J3</text>
+          <text x="4" y="38" font-family="'Share Tech Mono'" font-size="7" fill="rgba(0,245,255,0.35)">J5</text>
+          <text x="4" y="12" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,208,0,0.6)">EE</text>
+        </svg>
+        <div class="project-num">02</div>
+        <div class="project-status">COMPLETE</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag highlight">5 DoF</span>
+          <span class="tag">MATLAB</span>
+          <span class="tag">RoboAnalyzer</span>
+          <span class="tag">Cycloidal</span>
+        </div>
+        <h3 class="project-title">Manipulator Design &amp; Development</h3>
+        <p class="project-desc">5-DoF robotic manipulator with custom cycloidal gearbox for 140 &amp; 255 kg·cm BLDC motors. 5 kg payload. Backlash-free closed-loop control via encoders.</p>
+        <div class="project-specs">
+          <div class="spec-item">Cycloidal gearbox: 140 &amp; 255 kg·cm torque</div>
+          <div class="spec-item">Fwd &amp; inv kinematics — MATLAB + RoboAnalyzer</div>
+          <div class="spec-item">Encoder feedback for closed-loop control</div>
+          <div class="spec-item">Sheet metal + 3D print — 5 kg payload capacity</div>
+        </div>
+        <a href="#" class="project-link" onclick="openModal('arm'); return false;">View Analysis</a>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project-card bracket bracket-inner fade-in">
+      <div class="project-visual">
+        <svg width="180" height="140" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Robot body -->
+          <rect x="50" y="50" width="80" height="60" rx="8" fill="rgba(255,140,0,0.05)" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+          <!-- Wheels -->
+          <circle cx="65" cy="118" r="12" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="115" cy="118" r="12" fill="none" stroke="#ff8c00" stroke-width="1.2" opacity="0.7"/>
+          <!-- Impeller/brush indicator -->
+          <g style="animation: cadRotate 3s linear infinite; transform-origin: 90px 75px">
+            <circle cx="90" cy="75" r="20" fill="none" stroke="rgba(255,140,0,0.35)" stroke-width="1"/>
+            <line x1="90" y1="55" x2="90" y2="95" stroke="rgba(255,140,0,0.45)" stroke-width="0.8"/>
+            <line x1="70" y1="75" x2="110" y2="75" stroke="rgba(255,140,0,0.45)" stroke-width="0.8"/>
+            <line x1="76" y1="61" x2="104" y2="89" stroke="rgba(255,140,0,0.45)" stroke-width="0.8"/>
+            <line x1="76" y1="89" x2="104" y2="61" stroke="rgba(255,140,0,0.45)" stroke-width="0.8"/>
+            <circle cx="90" cy="75" r="5" fill="rgba(255,140,0,0.35)" stroke="#ff8c00" stroke-width="1"/>
+          </g>
+          <!-- Airflow lines -->
+          <path d="M30,70 Q40,75 50,70" stroke="#ffd000" stroke-width="0.8" fill="none" opacity="0.5" stroke-dasharray="3,3"/>
+          <path d="M28,80 Q42,85 50,80" stroke="#ffd000" stroke-width="0.8" fill="none" opacity="0.4" stroke-dasharray="3,3"/>
+          <!-- Sensor -->
+          <circle cx="90" cy="55" r="6" fill="none" stroke="#ffaa00" stroke-width="1"/>
+          <circle cx="90" cy="55" r="2" fill="#ffaa00" opacity="0.7"/>
+          <text x="20" y="15" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,140,0,0.45)">AUTONOMOUS // CLEANING BOT</text>
+          <!-- BLDC label -->
+          <text x="120" y="80" font-family="'Share Tech Mono'" font-size="7" fill="rgba(255,208,0,0.6)">BLDC</text>
+        </svg>
+        <div class="project-num">03</div>
+        <div class="project-status">IN-PROGRESS</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag highlight">Autonomous</span>
+          <span class="tag">CFD</span>
+          <span class="tag">48W BLDC</span>
+          <span class="tag">Fusion 360</span>
+        </div>
+        <h3 class="project-title">Reva — Autonomous Floor Cleaning Bot</h3>
+        <p class="project-desc">Autonomous floor-cleaning robot with optimized impeller system. 48W BLDC + 35mm intake achieving ~6.4 m/s suction velocity for effective debris collection.</p>
+        <div class="project-specs">
+          <div class="spec-item">Impeller optimized in Fusion 360 for max suction</div>
+          <div class="spec-item">Aerodynamic body with airflow cut patterns</div>
+          <div class="spec-item">48W BLDC · 35mm intake · 6.4 m/s suction velocity</div>
+          <div class="spec-item">CFD-validated airflow &amp; energy loss minimization</div>
+        </div>
+        <a href="#" class="project-link" onclick="openModal('reva'); return false;">View Analysis</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== ENGINEERING / RESEARCH ===== -->
+<section id="engineering">
+  <div class="section-header fade-in">
+    <div class="section-tag">Technical Depth</div>
+    <h2 class="section-title">Engineering <span class="accent">Research</span></h2>
+  </div>
+  <div class="research-grid">
+
+    <div class="research-card fade-in">
+      <div class="research-icon">⬡</div>
+      <h3 class="research-title">Suspension Architecture Study</h3>
+      <p class="research-desc">Comparative analysis of rover suspension systems for off-road terrain. Evaluating stability, obstacle clearance, and load distribution across architectures.</p>
+      <ul class="research-specs">
+        <li>Rocker-Bogie: best stability, 6-wheel independence</li>
+        <li>Dual Bogie: reduced complexity, lower mass</li>
+        <li>Triple Bogie: maximum terrain adaptability</li>
+        <li>ANSYS load distribution validation</li>
+        <li>Obstacle-climb ratio analysis (wheel dia. vs. step height)</li>
+      </ul>
+    </div>
+
+    <div class="research-card fade-in">
+      <div class="research-icon">⚙</div>
+      <h3 class="research-title">Cycloidal Gearbox Design</h3>
+      <p class="research-desc">High-reduction cycloidal drive design for robotic joint actuation. Compact form factor, low backlash, and high shock-load tolerance.</p>
+      <ul class="research-specs">
+        <li>Reduction ratio: 27:1 single stage</li>
+        <li>Cycloidal disc profile generation via parametric CAD</li>
+        <li>FEA stress analysis on disc &amp; pin rollers</li>
+        <li>Efficiency: ~92% at rated torque</li>
+        <li>Backlash: &lt;0.1° under load</li>
+      </ul>
+    </div>
+
+    <div class="research-card fade-in">
+      <div class="research-icon">∿</div>
+      <h3 class="research-title">Manipulator Kinematics</h3>
+      <p class="research-desc">Full kinematic analysis of the 5-DoF robotic arm using DH parameters. MATLAB-based workspace visualization and trajectory planning.</p>
+      <ul class="research-specs">
+        <li>Forward kinematics via DH parameter table</li>
+        <li>Inverse kinematics — geometric &amp; analytical method</li>
+        <li>Jacobian-based velocity kinematics</li>
+        <li>Reachable workspace volume computation</li>
+        <li>Singularity analysis &amp; avoidance strategy</li>
+      </ul>
+    </div>
+
+    <div class="research-card fade-in">
+      <div class="research-icon">◈</div>
+      <h3 class="research-title">Wheel-Terrain Interaction</h3>
+      <p class="research-desc">Terramechanics study for rover wheel design on simulated Martian regolith. Traction force, sinkage, and slip ratio analysis.</p>
+      <ul class="research-specs">
+        <li>Bekker-Wong soil model implementation</li>
+        <li>Grouser geometry optimization for loose sand</li>
+        <li>Traction vs. sinkage trade-off analysis</li>
+        <li>Wheel torque requirement calculations</li>
+      </ul>
+    </div>
+
+    <div class="research-card fade-in">
+      <div class="research-icon">△</div>
+      <h3 class="research-title">FEA Structural Analysis</h3>
+      <p class="research-desc">Finite element analysis of critical rover chassis components under static and dynamic loading conditions using ANSYS Mechanical.</p>
+      <ul class="research-specs">
+        <li>Static structural analysis: 3g shock load</li>
+        <li>Von Mises stress contours &amp; safety factor</li>
+        <li>Modal analysis — natural frequency mapping</li>
+        <li>Material: Al 6061-T6 &amp; PETG composites</li>
+      </ul>
+    </div>
+
+    <div class="research-card fade-in">
+      <div class="research-icon">⊕</div>
+      <h3 class="research-title">Impeller &amp; Airflow CFD</h3>
+      <p class="research-desc">Computational fluid dynamics simulation of the cleaning robot impeller for optimal suction pressure and flow rate.</p>
+      <ul class="research-specs">
+        <li>Blade angle optimization: 35° backward curved</li>
+        <li>Pressure-flow (PQ) curve generation</li>
+        <li>BLDC motor speed-torque matching</li>
+        <li>Noise reduction via blade count study</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div>
+    <div class="section-tag" style="justify-content:flex-start; margin-bottom:16px;">About Me</div>
+    <h2 class="section-title" style="text-align:left; margin-bottom:40px;">The Engineer <span class="accent">Behind</span> the Machines</h2>
+    <p class="about-text">
+      I am a <strong>Mechanical Engineering student at IIITDM Kancheepuram (CGPA 8.7)</strong>, currently serving as <strong>Mechanical Lead at MaRS Research Station</strong> — leading a team of 20+ engineers in robotics system development. My work spans CAD modeling, FEA, and motion analysis, with hands-on experience building autonomous manipulators, rovers, and cleaning robots.
+    </p>
+    <p class="about-text">
+      I've engineered <strong>triple-bogie, rocker-bogie, and dual-bogie suspension architectures</strong>, designed cycloidal gearboxes handling 200+ kg·cm torque, and developed 5–6 DoF manipulators with MATLAB-based kinematic simulations — all the way from design to field-tested competition hardware.
+    </p>
+    <div class="about-philosophy fade-in">
+      I believe robotics systems should be designed through the integration of mechanical robustness, efficient actuation, and intelligent control. My work focuses on building reliable mechanical architectures that enable robots to operate in challenging environments.
+    </div>
+  </div>
+  <div>
+    <div class="section-tag" style="justify-content:flex-start; margin-bottom:24px;">Skill Matrix</div>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-group-title">Design</div>
+        <div class="skill-item">SolidWorks <div class="skill-bar"><div class="skill-fill" style="width:90%; --delay:0.1s"></div></div></div>
+        <div class="skill-item">Fusion 360 <div class="skill-bar"><div class="skill-fill" style="width:85%; --delay:0.2s"></div></div></div>
+        <div class="skill-item">CATIA <div class="skill-bar"><div class="skill-fill" style="width:70%; --delay:0.3s"></div></div></div>
+      </div>
+      <div>
+        <div class="skill-group-title">Simulation</div>
+        <div class="skill-item">ANSYS <div class="skill-bar"><div class="skill-fill" style="width:80%; --delay:0.4s"></div></div></div>
+        <div class="skill-item">MATLAB <div class="skill-bar"><div class="skill-fill" style="width:85%; --delay:0.5s"></div></div></div>
+        <div class="skill-item">CFD <div class="skill-bar"><div class="skill-fill" style="width:65%; --delay:0.6s"></div></div></div>
+      </div>
+      <div>
+        <div class="skill-group-title">Fabrication</div>
+        <div class="skill-item">3D Printing <div class="skill-bar"><div class="skill-fill" style="width:90%; --delay:0.3s"></div></div></div>
+        <div class="skill-item">Sheet Metal <div class="skill-bar"><div class="skill-fill" style="width:75%; --delay:0.4s"></div></div></div>
+        <div class="skill-item">Machining <div class="skill-bar"><div class="skill-fill" style="width:70%; --delay:0.5s"></div></div></div>
+      </div>
+      <div>
+        <div class="skill-group-title">Programming</div>
+        <div class="skill-item">Python <div class="skill-bar"><div class="skill-fill" style="width:80%; --delay:0.5s"></div></div></div>
+        <div class="skill-item">C / C++ <div class="skill-bar"><div class="skill-fill" style="width:70%; --delay:0.6s"></div></div></div>
+        <div class="skill-item">ROS <div class="skill-bar"><div class="skill-fill" style="width:60%; --delay:0.7s"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== ACHIEVEMENTS ===== -->
+<section id="achievements">
+  <div class="section-header fade-in">
+    <div class="section-tag">Recognition</div>
+    <h2 class="section-title">Competition <span class="accent">Results</span></h2>
+  </div>
+  <div class="achievements-layout">
+    <div>
+      <div class="achievement-item fade-in">
+        <div class="ach-rank gold">#1</div>
+        <div>
+          <div class="ach-name">AtomQuest 2025</div>
+          <div class="ach-event">ATOMBERG TECHNOLOGIES — PUNE · NOV 2025</div>
+          <div class="ach-desc">Secured 1st rank among 18,000 participants across 6,000 teams. Onsite competition organized by Atomberg Technologies, recognized for complete mechanical design and system integration.</div>
+        </div>
+      </div>
+      <div class="achievement-item fade-in">
+        <div class="ach-rank" style="color:#ff8c00;text-shadow:var(--glow);font-size:20px;">4th<br><span style="font-size:13px;">GLOBAL</span></div>
+        <div>
+          <div class="ach-name">ERC 2025</div>
+          <div class="ach-event">EUROPEAN ROVER CHALLENGE — REMOTE · POLAND · JUNE 2025</div>
+          <div class="ach-desc">Ranked 4th globally in the submission category. Selected as Finalist of ERC 2025 — one of the world's most prestigious Mars rover competitions — competing against top international university teams.</div>
+        </div>
+      </div>
+      <div class="achievement-item fade-in">
+        <div class="ach-rank finalist">#10</div>
+        <div>
+          <div class="ach-name">IRC 2026</div>
+          <div class="ach-event">INDIA ROVER CHALLENGE — MANIPAL · FEB 2026</div>
+          <div class="ach-desc">Secured 10th rank among national and international teams. Led mechanical subsystem development including manipulator design, wheel torque calculations, and terrain-optimized wheel design.</div>
+        </div>
+      </div>
+      <div class="achievement-item fade-in">
+        <div class="ach-rank" style="font-size:20px;color:var(--text-dim);">#16</div>
+        <div>
+          <div class="ach-name">IRC 2025</div>
+          <div class="ach-event">INDIA ROVER CHALLENGE — BITS GOA · FEB 2025</div>
+          <div class="ach-desc">Designed and developed rover, manipulator, and science cache system for Mars exploration tasks. Secured 16th rank in the national competition.</div>
+        </div>
+      </div>
+      <div class="achievement-item fade-in">
+        <div class="ach-rank" style="font-size:16px;color:var(--amber);">FINAL<br><span style="font-size:11px;">IST</span></div>
+        <div>
+          <div class="ach-name">Caterpillar Autonomy Challenge</div>
+          <div class="ach-event">IIT MADRAS — ONSITE · JAN 2025</div>
+          <div class="ach-desc">Finalist in the Caterpillar Autonomy Challenge at IIT Madras. Task involved autonomous collection and placement of sand in a constrained arena environment.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="stats-panel fade-in">
+        <br/><br/>
+        <div class="stat-row">
+          <span class="stat-label">COMPETITIONS</span>
+          <div class="stat-bar-outer"><div class="stat-bar-fill" style="width:100%"></div></div>
+          <span class="stat-val">5</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">NATIONAL RANK</span>
+          <div class="stat-bar-outer"><div class="stat-bar-fill" style="width:99%"></div></div>
+          <span class="stat-val">#1</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">GLOBAL RANK</span>
+          <div class="stat-bar-outer"><div class="stat-bar-fill" style="width:97%"></div></div>
+          <span class="stat-val">4th</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">TEAM SIZE LED</span>
+          <div class="stat-bar-outer"><div class="stat-bar-fill" style="width:70%"></div></div>
+          <span class="stat-val">20+</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">CGPA</span>
+          <div class="stat-bar-outer"><div class="stat-bar-fill" style="width:87%"></div></div>
+          <span class="stat-val">8.7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== RESUME ===== -->
+<section id="resume">
+  <div class="section-header fade-in">
+    <div class="section-tag">Timeline</div>
+    <h2 class="section-title">Experience &amp; <span class="accent">Education</span></h2>
+  </div>
+  <div class="resume-layout">
+    <div class="timeline">
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot major"></div>
+        <div class="timeline-year">AUG 2023 — PRESENT</div>
+        <div class="timeline-role">B.Tech — Mechanical Engineering</div>
+        <div class="timeline-org">IIITDM Kancheepuram · CGPA 8.7</div>
+        <div class="timeline-desc">Bachelor of Technology in Mechanical Engineering. Focus on robotics, CAD/CAM, FEA, fluid mechanics, and control systems.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">AUG 2024 — MAY 2025</div>
+        <div class="timeline-role">Mechanical Design Engineer</div>
+        <div class="timeline-org">MaRS Research Station · Chennai</div>
+        <div class="timeline-desc">Designed complex mechanical systems for 4- and 6-wheeled rovers and 4–6 DoF manipulators with custom end-effectors. Used CAD for 3D modeling, FEA for structural analysis, and kinematic simulations. Designed custom cycloidal gearboxes handling 200+ kg·cm torque.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot major"></div>
+        <div class="timeline-year">JAN 2025</div>
+        <div class="timeline-role">Finalist — Caterpillar Autonomy Challenge</div>
+        <div class="timeline-org">IIT Madras · Onsite</div>
+        <div class="timeline-desc">Finalist in autonomous robotics challenge — task involved collecting sand and placing it into a sandbox using an autonomous system.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">FEB 2025</div>
+        <div class="timeline-role">IRC 2025 — Rank 16</div>
+        <div class="timeline-org">India Rover Challenge · BITS Goa</div>
+        <div class="timeline-desc">Designed and developed rover, manipulator, and science cache system for Mars exploration tasks.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot major"></div>
+        <div class="timeline-year">JUNE 2025</div>
+        <div class="timeline-role">ERC 2025 — Global Finalist · 4th Worldwide</div>
+        <div class="timeline-org">European Rover Challenge · Remote (Poland)</div>
+        <div class="timeline-desc">Ranked 4th globally in the submission category. Responsible for suspension, chassis, arm integration, and competition-readiness validation.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot major"></div>
+        <div class="timeline-year">MAY 2025 — PRESENT</div>
+        <div class="timeline-role">Mechanical Lead</div>
+        <div class="timeline-org">MaRS Research Station · Chennai</div>
+        <div class="timeline-desc">Leading a team of 20+ engineers in robotics system development. Engineered triple-bogie, rocker-bogie, and dual-bogie suspension architectures. Designed 5–6 DoF manipulators with MATLAB motion simulations and sensor-driven control systems.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot major"></div>
+        <div class="timeline-year">NOV 2025</div>
+        <div class="timeline-role">AtomQuest 2025 — Rank 1</div>
+        <div class="timeline-org">Atomberg Technologies · Pune · Onsite</div>
+        <div class="timeline-desc">Secured 1st rank among 18,000 participants (6,000 teams) — recognized for complete mechanical design and system integration excellence.</div>
+      </div>
+      <div class="timeline-item fade-in">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">FEB 2026</div>
+        <div class="timeline-role">IRC 2026 — Rank 10</div>
+        <div class="timeline-org">India Rover Challenge · Manipal Institute of Technology</div>
+        <div class="timeline-desc">Led mechanical subsystem development including manipulator design, wheel torque calculations, and terrain-optimized wheel design. Secured 10th rank among national and international teams.</div>
+      </div>
+    </div>
+
+    <div class="resume-panel">
+      <div class="resume-download">
+        <a href="https://drive.google.com/file/d/1eict7jCuI0PmSLatEmss7WkDUrci_Kag/view?usp=drive_link" target="_blank" style="text-decoration:none;">
+        <div class="resume-preview-icon" style="cursor:none;">
+          <svg width="32" height="40" viewBox="0 0 32 40"><rect x="2" y="2" width="22" height="36" rx="2" fill="none" stroke="rgba(255,140,0,0.45)" stroke-width="1"/><line x1="6" y1="10" x2="20" y2="10" stroke="rgba(255,140,0,0.35)" stroke-width="0.8"/><line x1="6" y1="15" x2="20" y2="15" stroke="rgba(255,140,0,0.35)" stroke-width="0.8"/><line x1="6" y1="20" x2="16" y2="20" stroke="rgba(255,140,0,0.35)" stroke-width="0.8"/><line x1="6" y1="25" x2="18" y2="25" stroke="rgba(255,140,0,0.35)" stroke-width="0.8"/></svg>
+          <span>RESUME.PDF</span>
+        </div>
+        </a>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:1px;margin-bottom:16px;">UTKARSH VISHWAKARMA</div>
+        <a href="https://drive.google.com/file/d/1eict7jCuI0PmSLatEmss7WkDUrci_Kag/view?usp=drive_link" target="_blank" class="btn-download">⬇ Download CV</a>
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-dim);">PDF · Updated 2025</div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-deg">B.Tech — Mechanical Engineering</div>
+        <div class="edu-inst">IIITDM KANCHEEPURAM</div>
+        <div class="edu-year">Aug 2023 – Aug 2027 (Expected) · CGPA 8.7</div>
+        <br/>
+        <div class="edu-deg" style="margin-top:16px;">Intermediate (91%)</div>
+        <div class="edu-inst">VARDHMAN PUBLIC SCHOOL</div>
+        <div class="edu-year">2020 – 2022 · Mirzapur, Uttar Pradesh</div>
+        <br/>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-top:8px;">KEY COURSEWORK</div>
+        <div style="font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.8;">
+          Robotics &amp; Automation · Theory of Machines · FEA · Fluid Mechanics · Control Systems · CAD/CAM
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <div class="contact-layout">
+    <div class="fade-in">
+      <div class="section-tag" style="justify-content:flex-start; margin-bottom:16px;">Get in Touch</div>
+      <h2 class="contact-info-title">Let's Build<br><span class="accent">Something Real</span></h2>
+      <p class="contact-desc">
+        Open to research collaborations, internship opportunities, and robotics projects. If you're working on something that pushes the boundary of what machines can do — let's talk.
+      </p>
+      <div class="contact-links">
+        <a href="/cdn-cgi/l/email-protection#2d40481f1e4f1c1d1a186d444444594940034c4e034443" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          <div>
+            <div class="contact-link-label">EMAIL</div>
+            <div class="contact-link-val"><span class="__cf_email__" data-cfemail="08656d3a3b6a39383f3d486161617c6c6526696b266166">[email&#160;protected]</span></div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/utkarsh" class="contact-link" target="_blank">
+          <div class="contact-link-icon">in</div>
+          <div>
+            <div class="contact-link-label">LINKEDIN</div>
+            <div class="contact-link-val">linkedin.com/in/Utkarsh</div>
+          </div>
+        </a>
+        <a href="https://github.com/uv9651goat" class="contact-link" target="_blank">
+          <div class="contact-link-icon">&lt;/&gt;</div>
+          <div>
+            <div class="contact-link-label">GITHUB</div>
+            <div class="contact-link-val">github.com/uv9651goat</div>
+          </div>
+        </a>
+        <a href="tel:+919651616663" class="contact-link">
+          <div class="contact-link-icon">☏</div>
+          <div>
+            <div class="contact-link-label">PHONE</div>
+            <div class="contact-link-val">+91 96516 16663</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="fade-in">
+      <div class="contact-form">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input class="form-input" type="text" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" type="text" placeholder="Internship / Collaboration / Project">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about the opportunity or project..."></textarea>
+        </div>
+        <button class="btn-send" onclick="alert('Connect this to a form service like Formspree!')">⬤ Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 <span>UTKARSH VISHWAKARMA</span> // MECHANICAL LEAD</div>
+  <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);">IIITDM KANCHEEPURAM · <span>MaRS RESEARCH STATION</span></div>
+  <div>DESIGNED WITH <span>PRECISION</span></div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 80);
+  });
+  document.querySelectorAll('a, button, .project-card, .research-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.borderColor = 'rgba(255,140,0,0.7)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.borderColor = 'rgba(255,140,0,0.45)';
+    });
+  });
+
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Stat bars animate on scroll
+  const statObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.stat-bar-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => bar.style.width = w, 200);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.stats-panel').forEach(el => statObserver.observe(el));
+
+  // Smooth nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+       sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--cyan)' : '';
+    });
+  });
+</script>
+
+<!-- ===== ANALYSIS MODALS ===== -->
+<div id="modal-overlay" onclick="closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;backdrop-filter:blur(6px);"></div>
+
+<div id="modal-box" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.95);z-index:2001;width:min(860px,92vw);max-height:88vh;overflow-y:auto;background:#0a0e1a;border:1px solid rgba(255,140,0,0.35);box-shadow:0 0 60px rgba(255,140,0,0.18);transition:transform 0.25s ease,opacity 0.25s ease;opacity:0;">
+  <div style="position:sticky;top:0;background:#0a0e1a;border-bottom:1px solid rgba(255,140,0,0.12);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;z-index:10;">
+    <div id="modal-title" style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:2px;"></div>
+    <button onclick="closeModal()" style="background:none;border:1px solid rgba(255,140,0,0.28);color:#ff8c00;font-family:'Share Tech Mono',monospace;font-size:12px;padding:6px 16px;cursor:pointer;letter-spacing:2px;transition:all 0.2s;" onmouseenter="this.style.background='rgba(255,140,0,0.12)'" onmouseleave="this.style.background='none'">✕ CLOSE</button>
+  </div>
+  <div id="modal-content" style="padding:32px;"></div>
+</div>
+
+<style>
+  .modal-section { margin-bottom: 36px; }
+  .modal-section-title {
+    font-family: 'Share Tech Mono', monospace; font-size: 10px;
+    color: #ff8c00; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,140,0,0.18);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .modal-section-title::before { content: '//'; color: rgba(255,140,0,0.45); }
+  .modal-overview {
+    font-family: 'Rajdhani', sans-serif; font-size: 16px;
+    color: #c8d8e8; line-height: 1.8; margin-bottom: 28px;
+    border-left: 2px solid #ff8c00; padding-left: 18px;
+  }
+  .modal-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom:4px; }
+  .modal-stat-card {
+    background: #0a0800; border: 1px solid rgba(255,140,0,0.15);
+    padding: 20px; text-align: center;
+  }
+  .modal-stat-val {
+    font-family: 'Orbitron', monospace; font-size: 22px;
+    font-weight: 900; color: #ff8c00;
+    text-shadow: 0 0 20px rgba(255,140,0,0.45); margin-bottom: 6px;
+  }
+  .modal-stat-label {
+    font-family: 'Share Tech Mono', monospace; font-size: 9px;
+    color: #5a7080; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .modal-process-steps { display: flex; flex-direction: column; gap: 0; }
+  .modal-step {
+    display: grid; grid-template-columns: 48px 1fr;
+    gap: 16px; align-items: start; padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .modal-step-num {
+    font-family: 'Orbitron', monospace; font-size: 11px;
+    font-weight: 700; color: #ff8c00; width: 36px; height: 36px;
+    border: 1px solid rgba(255,140,0,0.35);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .modal-step-title {
+    font-family: 'Orbitron', monospace; font-size: 11px;
+    font-weight: 700; color: #fff; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .modal-step-desc {
+    font-family: 'Rajdhani', sans-serif; font-size: 14px;
+    color: #5a7080; line-height: 1.6;
+  }
+  .modal-findings { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .modal-findings li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-family: 'Rajdhani', sans-serif; font-size: 15px; color: #c8d8e8;
+    padding: 10px 14px; background: rgba(255,140,0,0.04);
+    border-left: 2px solid rgba(255,140,0,0.22);
+  }
+  .modal-findings li::before { content: '›'; color: #ff8c00; flex-shrink: 0; font-size: 16px; }
+  .modal-tag {
+    display: inline-block; font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; color: #ffd000; border: 1px solid rgba(255,208,0,0.3);
+    padding: 3px 10px; letter-spacing: 1px; text-transform: uppercase; margin: 3px;
+  }
+  .modal-bar-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .modal-bar-label {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    color: #5a7080; width: 160px; flex-shrink: 0;
+  }
+  .modal-bar-outer { flex: 1; height: 6px; background: rgba(255,255,255,0.06); position: relative; }
+  .modal-bar-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, #ff8c00, #ffd000);
+    box-shadow: 0 0 8px #ff8c00;
+    animation: fillBar 1.2s ease both;
+  }
+  .modal-bar-val {
+    font-family: 'Orbitron', monospace; font-size: 12px;
+    font-weight: 700; color: #ff8c00; width: 70px; text-align: right;
+  }
+</style>
+
+<script>
+const modalData = {
+  rover: {
+    title: 'Rover Development — IRC &amp; ERC Analysis',
+    content: `
+      <p class="modal-overview">Six-wheeled Mars rover engineered for ERC 2025 (4th globally) and IRC 2026 (10th nationally). Total weight under 50 kg with triple-bogie suspension, PETG+TPU wheels, and full mechanical–electrical integration.</p>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Interactive 3D CAD Model — Rotate · Zoom · Pan</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;background:#060810;border:1px solid rgba(255,140,0,0.22);overflow:hidden;">
+          <iframe title="Rover Chassis" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share
+            src="https://sketchfab.com/models/4a3650c0fcfc438fa2b177d02585a516/embed?autospin=0.3&autostart=1&ui_theme=dark&ui_infos=0&ui_watermark=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;">
+          </iframe>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#5a7080;letter-spacing:1px;margin-top:8px;text-align:center;">DRAG TO ROTATE · SCROLL TO ZOOM · RIGHT-CLICK TO PAN</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Key Performance Metrics</div>
+        <div class="modal-grid-3">
+          <div class="modal-stat-card"><div class="modal-stat-val">&lt;50kg</div><div class="modal-stat-label">Total System Weight</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">4</div><div class="modal-stat-label">Driven Wheels</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">3x</div><div class="modal-stat-label">Suspension Archs. Tested</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">3g</div><div class="modal-stat-label">Shock Load (FEA Validated)</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">4th</div><div class="modal-stat-label">ERC Global Rank</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">#10</div><div class="modal-stat-label">IRC National Rank</div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Design Process</div>
+        <div class="modal-process-steps">
+          <div class="modal-step"><div class="modal-step-num">01</div><div><div class="modal-step-title">Suspension Architecture Selection</div><div class="modal-step-desc">Compared rocker-bogie, dual-bogie, and triple-bogie systems across stability, obstacle-climb ratio, and load distribution. Selected triple-bogie for maximum terrain adaptability at the target mass budget.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">02</div><div><div class="modal-step-title">CAD Modelling — Fusion 360 &amp; SolidWorks</div><div class="modal-step-desc">Full parametric 3D model of chassis, suspension linkages, and wheel assemblies. Incorporated sensor mounts, electronics bay, and arm integration points within the structural envelope.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">03</div><div><div class="modal-step-title">FEA — ANSYS Structural Analysis</div><div class="modal-step-desc">Static structural analysis under 3g shock load. Von Mises stress contour mapping identified high-stress zones. Iterated geometry to improve stiffness-to-weight ratio. Material: Al 6061-T6 chassis, PETG+TPU wheels.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">04</div><div><div class="modal-step-title">Wheel Design — PETG + TPU</div><div class="modal-step-desc">Wheels fabricated using PETG structural shell with TPU tread layer for flexibility and traction on loose regolith simulant. Grouser geometry designed for minimal sinkage and max drawbar pull.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">05</div><div><div class="modal-step-title">Mechanical–Electrical Integration &amp; Field Testing</div><div class="modal-step-desc">Led integration of all mechanical subsystems with electronics, motors, and sensor arrays. Conducted field testing under competition task constraints — terrain traversal, sample collection, and manipulation.</div></div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Structural Performance</div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Terrain Adaptability</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:95%"></div></div><span class="modal-bar-val">95%</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">FEA Safety Factor</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:80%"></div></div><span class="modal-bar-val">2.4x</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Weight Budget</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:90%"></div></div><span class="modal-bar-val">&lt;50kg</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Tools &amp; Technologies</div>
+        <div><span class="modal-tag">Fusion 360</span><span class="modal-tag">SolidWorks</span><span class="modal-tag">ANSYS</span><span class="modal-tag">MATLAB</span><span class="modal-tag">CATIA</span><span class="modal-tag">3D Printing</span><span class="modal-tag">Sheet Metal</span><span class="modal-tag">PETG</span><span class="modal-tag">TPU</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Key Engineering Findings</div>
+        <ul class="modal-findings">
+          <li>Triple-bogie outperformed rocker-bogie in terrain adaptability by ~18% in obstacle climb tests</li>
+          <li>PETG+TPU wheel combination reduced sinkage by ~22% over solid PETG in regolith simulant</li>
+          <li>ANSYS FEA revealed stress concentration at bogie pivot — resolved via fillet geometry and gusset addition</li>
+          <li>Final design achieved 2.4x safety factor under worst-case 3g drop impact loading</li>
+        </ul>
+      </div>
+    `
+  },
+  arm: {
+    title: '5-DoF Manipulator — Design &amp; Kinematic Analysis',
+    content: `
+      <p class="modal-overview">5 Degrees-of-Freedom robotic manipulator for precision tasks including object retrieval and placement. Custom cycloidal gearbox: 255 kg·cm torque, encoder closed-loop control, MATLAB-validated kinematics. Payload: 5 kg.</p>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Interactive 3D CAD Model — Rotate · Zoom · Pan</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;background:#060810;border:1px solid rgba(255,140,0,0.22);overflow:hidden;">
+          <iframe title="Manipulator" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share
+            src="https://sketchfab.com/models/63e2f580dc5c497baae5d78a6ed00990/embed?autospin=0.3&autostart=1&ui_theme=dark&ui_infos=0&ui_watermark=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;">
+          </iframe>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#5a7080;letter-spacing:1px;margin-top:8px;text-align:center;">DRAG TO ROTATE · SCROLL TO ZOOM · RIGHT-CLICK TO PAN</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">System Specifications</div>
+        <div class="modal-grid-3">
+          <div class="modal-stat-card"><div class="modal-stat-val">5</div><div class="modal-stat-label">Degrees of Freedom</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">255<span style="font-size:14px"> kg·cm</span></div><div class="modal-stat-label">Peak Joint Torque</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">5kg</div><div class="modal-stat-label">Payload Capacity</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">140<span style="font-size:14px"> kg·cm</span></div><div class="modal-stat-label">Standard Joint Torque</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">&lt;0.1°</div><div class="modal-stat-label">Backlash Under Load</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">~92%</div><div class="modal-stat-label">Gearbox Efficiency</div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Cycloidal Gearbox Design</div>
+        <div class="modal-process-steps">
+          <div class="modal-step"><div class="modal-step-num">01</div><div><div class="modal-step-title">Gear Profile Generation</div><div class="modal-step-desc">Cycloidal disc profile generated parametrically in Fusion 360. Pin roller count and eccentricity calculated to achieve 27:1 single-stage reduction with minimal backlash.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">02</div><div><div class="modal-step-title">FEA — Disc &amp; Pin Roller Stress</div><div class="modal-step-desc">ANSYS contact stress analysis on cycloidal disc and pin rollers under 255 kg·cm rated torque. Von Mises stress verified below material yield — Al 7075-T6 disc, hardened steel pins.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">03</div><div><div class="modal-step-title">BLDC Motor Matching</div><div class="modal-step-desc">Paired with 140 kg·cm and 255 kg·cm BLDC motors at different joints based on torque demand from kinematic analysis. Output shaft integrated with encoder for closed-loop position control.</div></div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Kinematic Analysis</div>
+        <div class="modal-process-steps">
+          <div class="modal-step"><div class="modal-step-num">FK</div><div><div class="modal-step-title">Forward Kinematics — DH Parameters</div><div class="modal-step-desc">Built DH parameter table for all 5 joints. Derived homogeneous transformation matrices T₀₁ through T₄₅ to compute end-effector position and orientation from joint angles.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">IK</div><div><div class="modal-step-title">Inverse Kinematics — Geometric + Analytical</div><div class="modal-step-desc">Solved IK using geometric decoupling for the first 3 joints and analytical wrist solution for joints 4–5. Validated against FK solutions — positional error &lt;0.5mm.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">WS</div><div><div class="modal-step-title">Workspace &amp; Singularity Analysis</div><div class="modal-step-desc">Reachable workspace computed via Monte Carlo sampling in MATLAB. Singularity configurations identified and trajectory planner constrained to avoid them.</div></div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Joint Torque Distribution</div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Joint 1 (Base)</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:100%"></div></div><span class="modal-bar-val">255 kg·cm</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Joint 2 (Shoulder)</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:100%"></div></div><span class="modal-bar-val">255 kg·cm</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Joint 3 (Elbow)</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:55%"></div></div><span class="modal-bar-val">140 kg·cm</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Joint 4 (Wrist Roll)</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:55%"></div></div><span class="modal-bar-val">140 kg·cm</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Joint 5 (Wrist Pitch)</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:30%"></div></div><span class="modal-bar-val">~75 kg·cm</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Tools &amp; Technologies</div>
+        <div><span class="modal-tag">Fusion 360</span><span class="modal-tag">SolidWorks</span><span class="modal-tag">ANSYS</span><span class="modal-tag">MATLAB</span><span class="modal-tag">RoboAnalyzer</span><span class="modal-tag">BLDC Motors</span><span class="modal-tag">Encoders</span><span class="modal-tag">Sheet Metal</span><span class="modal-tag">3D Printing</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Key Engineering Findings</div>
+        <ul class="modal-findings">
+          <li>Cycloidal drive achieved &lt;0.1° backlash under rated load — superior to planetary gearbox alternatives</li>
+          <li>FEA confirmed cycloidal disc safe at 255 kg·cm — von Mises stress 68% of yield for Al 7075-T6</li>
+          <li>IK positional accuracy validated against FK — end-effector error &lt;0.5mm across full workspace</li>
+          <li>Encoder closed-loop reduced positional drift from ±3° to ±0.2° during hold under load</li>
+          <li>5 kg payload maintained with 1.6x safety factor at full arm extension</li>
+        </ul>
+      </div>
+    `
+  },
+  reva: {
+    title: 'Reva — Autonomous Cleaning Bot Analysis',
+    content: `
+      <p class="modal-overview">Autonomous floor-cleaning robot focused on efficient suction, aerodynamic airflow management, and lightweight structural design. Powered by a 48W BLDC motor with 35mm intake achieving ~6.4 m/s suction velocity — CFD validated.</p>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Interactive 3D CAD Model — Rotate · Zoom · Pan</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;background:#060810;border:1px solid rgba(255,140,0,0.22);overflow:hidden;">
+          <iframe title="Reva — Autonomous Cleaning Bot" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share
+            src="https://sketchfab.com/models/c28091e7ed214a59b79e3075d86da812/embed?autospin=0.3&autostart=1&ui_theme=dark&ui_infos=0&ui_watermark=0"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;">
+          </iframe>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#5a7080;letter-spacing:1px;margin-top:8px;text-align:center;">DRAG TO ROTATE · SCROLL TO ZOOM · RIGHT-CLICK TO PAN</div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">System Specifications</div>
+        <div class="modal-grid-3">
+          <div class="modal-stat-card"><div class="modal-stat-val">48W</div><div class="modal-stat-label">BLDC Motor Power</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">35mm</div><div class="modal-stat-label">Intake Diameter</div></div>
+          <div class="modal-stat-card"><div class="modal-stat-val">6.4 m/s</div><div class="modal-stat-label">Suction Velocity</div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Impeller Design Process</div>
+        <div class="modal-process-steps">
+          <div class="modal-step"><div class="modal-step-num">01</div><div><div class="modal-step-title">Blade Geometry Parametrisation</div><div class="modal-step-desc">Impeller blade count, angle (backward-curved at 35°), and tip diameter parametrically modelled in Fusion 360. Target: maximise pressure rise at minimum power draw.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">02</div><div><div class="modal-step-title">CFD — Airflow &amp; Pressure Analysis</div><div class="modal-step-desc">CFD analysis of internal airflow paths validated the pressure-flow (PQ) curve. Identified recirculation zones at blade tips — resolved by adjusting exit angle. Energy loss minimised by 17% post-iteration.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">03</div><div><div class="modal-step-title">BLDC Motor Matching</div><div class="modal-step-desc">Speed-torque curve of 48W BLDC matched to impeller load at operating RPM. Operating point selected for max efficiency — avoids stall and thermal overload regions.</div></div></div>
+          <div class="modal-step"><div class="modal-step-num">04</div><div><div class="modal-step-title">Aerodynamic Body Design</div><div class="modal-step-desc">Outer body modelled with custom cut patterns to channel airflow from intake through impeller to exhaust without recirculation. Validated in CFD.</div></div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Airflow Performance</div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Suction Velocity</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:82%"></div></div><span class="modal-bar-val">6.4 m/s</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Energy Loss Reduction</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:68%"></div></div><span class="modal-bar-val">−17%</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Motor Efficiency at OP</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:85%"></div></div><span class="modal-bar-val">~85%</span></div>
+        <div class="modal-bar-row"><span class="modal-bar-label">Intake Diameter</span><div class="modal-bar-outer"><div class="modal-bar-fill" style="width:45%"></div></div><span class="modal-bar-val">35 mm</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Tools &amp; Technologies</div>
+        <div><span class="modal-tag">Fusion 360</span><span class="modal-tag">SolidWorks</span><span class="modal-tag">CFD</span><span class="modal-tag">48W BLDC</span><span class="modal-tag">Impeller Design</span><span class="modal-tag">3D Printing</span><span class="modal-tag">Sheet Metal</span></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Key Engineering Findings</div>
+        <ul class="modal-findings">
+          <li>Backward-curved blades at 35° provided best pressure rise without flow separation at design RPM</li>
+          <li>CFD revealed recirculation at blade exit — corrected by tapering exit angle from 40° to 33°</li>
+          <li>Energy losses reduced by 17% after geometry iteration — confirmed via before/after CFD comparison</li>
+          <li>35mm intake diameter is optimal for 48W motor: larger reduced velocity, smaller caused motor overload</li>
+          <li>Custom airflow cut patterns in body reduced internal turbulence and improved debris channelling</li>
+        </ul>
+      </div>
+    `
+  }
+};
+
+function openModal(id) {
+  const data = modalData[id];
+  if (!data) return;
+  document.getElementById('modal-title').innerHTML = data.title;
+  document.getElementById('modal-content').innerHTML = data.content;
+  const overlay = document.getElementById('modal-overlay');
+  const box = document.getElementById('modal-box');
+  overlay.style.display = 'block';
+  box.style.display = 'block';
+  box.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    box.style.opacity = '1';
+    box.style.transform = 'translate(-50%, -50%) scale(1)';
+  });
+}
+
+function closeModal() {
+  const box = document.getElementById('modal-box');
+  const overlay = document.getElementById('modal-overlay');
+  box.style.opacity = '0';
+  box.style.transform = 'translate(-50%, -50%) scale(0.95)';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    box.style.display = 'none';
+    document.body.style.overflow = '';
+  }, 250);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+</body>
+</html>
